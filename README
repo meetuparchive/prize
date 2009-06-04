@@ -1,0 +1,27 @@
+Prize
+=====
+
+A random picker for meetup door prize winners
+
+This is a sketch written for [Spde][1] snapshot 2009-06-04 or higher. The
+easiest way to use it is to clone
+
+    git clone git://technically.us/git/Prize
+
+within your sketches directory, something like `~/Documents/Processing/`.
+After that it should appear in your sketchbook.
+
+Prize must be configured with your [Meetup API credentials][2] and the ID
+of the meetup where it should fetch its attendee list. Create a text file
+`Prize/data/prize.conf` of the format
+
+    key = "API-KEY-HERE"
+    event_id = EVENT-ID-HERE
+
+with quotes for the string API key and no quotes for the numeric event ID.
+
+Enjoy, and please send improvement patches to nathan@technically.us or
+@n8han on Twitter.
+
+[1]:http://technically.us/spde/
+[2]:http://www.meetup.com/account/oauth_apps/
