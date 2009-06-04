@@ -5,14 +5,16 @@ Configgy.configure(dataPath("prize.conf"))
 
 object Meetup extends json.Js {
   val req = :/("api.meetup.com") / "rsvps.json" <<? Configgy.config.asMap
-  val attendees = Http(req ># ('results ? (list ! obj))) map ('name ! str)
+  val attendees = Http(req ># ('results ? (list ! obj))) filter {
+    ('response ! str)(_) == "yes"
+  } map ('name ! str)
 }
 
 frameRate(15)
 textFont(loadFont("deja.vlw"))
 size(800, 400)
 
-var t = 1.0
+var t = 4.0
 var v = 0.4
 var winner = Meetup.attendees.random
 
