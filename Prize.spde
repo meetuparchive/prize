@@ -1,13 +1,15 @@
-import dispatch._
 import net.lag.configgy.Configgy
-
 Configgy.configure(dataPath("prize.conf"))
 
-object Meetup extends json.Js {
+object Meetup {
+  import dispatch._
+  import json.Js
+  import Js._
   val req = :/("api.meetup.com") / "rsvps.json" <<? Configgy.config.asMap
-  val attendees = Http(req ># ('results ? (list ! obj))) filter {
-    ('response ! str)(_) == "yes"
-  } map ('name ! str)
+  val attendees = for {
+    js <- Http(req ># ('results ? (Js.list ! obj)))
+    if ('response ! str)(js) == "yes"
+  } yield ('name ! str)(js)
 }
 
 frameRate(15)

@@ -1,1 +1,6 @@
 data/prize.conf
+lib_managed/
+boot/
+target/
+project/plugins/project/
+src_managed/
