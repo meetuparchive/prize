@@ -3,11 +3,12 @@ Configgy.configure(dataPath("prize.conf"))
 
 object Meetup {
   import dispatch._
-  import json.Js
-  import Js._
+  import dispatch.json.Js
+  import dispatch.json.JsHttp._
+  val http = new Http
   val req = :/("api.meetup.com") / "rsvps.json" <<? Configgy.config.asMap
   val attendees = for {
-    js <- Http(req ># ('results ? (Js.list ! obj)))
+    js <- http(req ># ('results ? (Js.list ! obj)))
     if ('response ! str)(js) == "yes"
   } yield ('name ! str)(js)
 }
