@@ -1,12 +1,16 @@
-import net.lag.configgy.Configgy
-Configgy.configure(dataPath("prize.conf"))
-
 object Meetup {
   import dispatch._
   import dispatch.json.Js
   import dispatch.json.JsHttp._
+  import scala.collection.JavaConversions._
+
+  val keyfile = new java.io.FileInputStream(dataPath("key.properties"))
+  val key = new java.util.Properties
+  key.load(keyfile)
+  keyfile.close()
+
   val http = new Http
-  val req = :/("api.meetup.com") / "rsvps.json" <<? Configgy.config.asMap
+  val req = :/("api.meetup.com") / "rsvps.json" <<? key
   val attendees = for {
     js <- http(req ># ('results ? (Js.list ! obj)))
     if ('response ! str)(js) == "yes"
