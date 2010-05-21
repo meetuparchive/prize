@@ -1,4 +1,4 @@
-data/key.properties
+data/api.properties
 lib_managed/
 boot/
 target/

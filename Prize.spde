@@ -3,14 +3,17 @@ object Meetup {
   import dispatch.json.Js
   import dispatch.json.JsHttp._
   import scala.collection.JavaConversions._
-
-  val keyfile = new java.io.FileInputStream(dataPath("key.properties"))
-  val key = new java.util.Properties
-  key.load(keyfile)
-  keyfile.close()
+  
+  val api_props = {
+    val file = new java.io.FileInputStream(dataPath("api.properties"))
+    val props = new java.util.Properties
+    props.load(file)
+    file.close()
+    props
+  }
 
   val http = new Http
-  val req = :/("api.meetup.com") / "rsvps.json" <<? key
+  val req = :/("api.meetup.com") / "rsvps.json" <<? api_props
   val attendees = for {
     js <- http(req ># ('results ? (Js.list ! obj)))
     if ('response ! str)(js) == "yes"
