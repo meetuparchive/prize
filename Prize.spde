@@ -34,15 +34,24 @@ val wheel = Meetup.attendees.zipWithIndex map { case (name, i) =>
 }
 var spin = 0.0
 var frame = 0
-def speed(frame: Int) = {
-  val frames = 1024
+val frames = 1024
+def speed = {
   val top_speed = .2
-  top_speed - .1 * tan(HALF_PI * frame / frames)
+  max(top_speed - .1 * tan(HALF_PI * frame / frames), 0)
+}
+def camera() {
+  val head = frame.toFloat / frames
+  val z = (512 - 512 / min(1, (head + .2))) * 2
+  val x = max(0, width/2  - (width / 2 / (1-head)))
+  translate(x, width/2, z)
+  val rot = TWO_PI * min(head, .25)*4
+  rotateY(rot)
 }
 
 def draw() {
+  frame = frame + 1
   background(0)
-  translate(width/2, height/2, -1024)
+  camera()
   rotate(spin)
   for (contestant <- wheel) {
     pushMatrix()
@@ -51,11 +60,9 @@ def draw() {
     text(contestant.name, 0, 0)
     popMatrix()
   }
-  frame = frame + 1
-  speed(frame) match {
-    case delta if delta > 0 => spin = (spin + delta) % TWO_PI
-    case _ => noLoop()
-  }
+  spin = (spin + speed) % TWO_PI
+  if (frame == frames)
+    noLoop()
 }
 
 override def mouseClicked {
