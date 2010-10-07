@@ -1,3 +1,10 @@
+override def setup() {
+  frameRate(40)
+  textFont(loadFont("deja.vlw"))
+  size(512, 512, OPENGL)
+  loop()
+}
+
 object Meetup {
   import dispatch._
   import dispatch.json.Js
@@ -20,25 +27,35 @@ object Meetup {
   } yield ('name ! str)(js)
 }
 
-frameRate(15)
-textFont(loadFont("deja.vlw"))
-size(800, 400)
+case class Contestant(name: String, angle: Double)
 
-var t = 4.0
-var v = 0.4
-var winner = Meetup.attendees.random
+val wheel = Meetup.attendees.zipWithIndex map { case (name, i) =>
+  Contestant(name, TWO_PI * i / Meetup.attendees.length)
+}
+var spin = 0.0
+var frame = 0
+def speed(frame: Int) = {
+  val frames = 1024
+  val top_speed = .1
+  top_speed - .1 * tan(HALF_PI * frame / frames)
+}
 
 def draw() {
   background(0)
-  text(winner, noise(t, 0) * width / 2, noise(t, 1) * height)
-  winner = play((v * 100).toInt %> Meetup.attendees.random, 40 %> winner)
-  t = t + v
-  v = v - .003
-  if (v < 0)
-    noLoop()
+  translate(width/2, height/2, -512)
+  rotate(spin)
+  for (contestant <- wheel) {
+    pushMatrix()
+    rotate(contestant.angle)
+    text(contestant.name, 0, 0)
+    popMatrix()
+  }
+  frame = frame + 1
+  speed(frame) match {
+    case delta if delta > 0 => spin = (spin + delta) % TWO_PI
+    case _ => noLoop()
+  }
 }
 
 override def mouseClicked {
-  v = 0.3
-  loop()
 }
