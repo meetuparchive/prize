@@ -2,7 +2,6 @@ override def setup() {
   frameRate(40)
   textFont(loadFont("deja.vlw"))
   size(512, 512, OPENGL)
-  loop()
 }
 
 object Meetup {
@@ -66,4 +65,7 @@ def draw() {
 }
 
 override def mouseClicked {
+  spin = 0.0
+  frame = 0
+  loop()
 }
