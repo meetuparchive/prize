@@ -42,9 +42,9 @@ def speed = {
 def camera() {
   val head = frame.toFloat / frames
   val z = (512 - 512 / min(1, (head + .2))) * 2
-  val x = max(0, width/2  - (width / 2 / (1-head)))
+  val x = max(-150, width/2  - (width / 2 / (1-head)))
   translate(x, width/2, z)
-  val rot = TWO_PI * min(head, .25)*4
+  val rot = TWO_PI * min(head, .25)*4 + .6
   rotateY(rot)
 }
 
