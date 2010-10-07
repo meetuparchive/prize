@@ -36,17 +36,18 @@ var spin = 0.0
 var frame = 0
 def speed(frame: Int) = {
   val frames = 1024
-  val top_speed = .1
+  val top_speed = .2
   top_speed - .1 * tan(HALF_PI * frame / frames)
 }
 
 def draw() {
   background(0)
-  translate(width/2, height/2, -512)
+  translate(width/2, height/2, -1024)
   rotate(spin)
   for (contestant <- wheel) {
     pushMatrix()
     rotate(contestant.angle)
+    translate(200, 0)
     text(contestant.name, 0, 0)
     popMatrix()
   }
