@@ -31,9 +31,10 @@ case class Contestant(name: String, angle: Double)
 val wheel = Meetup.attendees.zipWithIndex map { case (name, i) =>
   Contestant(name, TWO_PI * i / Meetup.attendees.length)
 }
-var spin = 0.0
+def random_spin = System.currentTimeMillis % TWO_PI
+var spin = random_spin
 var frame = 0
-val frames = 1024
+val frames = 1000
 def speed = {
   val top_speed = .2
   max(top_speed - .1 * tan(HALF_PI * frame / frames), 0)
@@ -65,7 +66,7 @@ def draw() {
 }
 
 override def mouseClicked {
-  spin = 0.0
+  spin = random_spin
   frame = 0
   loop()
 }
