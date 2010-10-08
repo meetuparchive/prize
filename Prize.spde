@@ -51,6 +51,7 @@ def camera() {
 def draw() {
   frame = frame + 1
   background(0)
+  pushMatrix()
   camera()
   rotate(spin)
   for (contestant <- wheel) {
@@ -61,8 +62,14 @@ def draw() {
     popMatrix()
   }
   spin = (spin + speed) % TWO_PI
-  if (frame == frames)
+  popMatrix()
+  if (frame.toFloat / frames > .7) {
+    val top = height * 4f / 10
+    triangle(0, top, 0, height - top, width / 10, height / 2)
+  }
+  if (frame == frames) {
     noLoop()
+  }
 }
 
 override def mouseClicked {
