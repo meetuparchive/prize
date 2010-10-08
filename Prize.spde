@@ -19,7 +19,7 @@ object Meetup {
   }
 
   val http = new Http
-  val req = :/("api.meetup.com") / "rsvps.json" <<? api_props
+  val req = :/("api.meetup.com").secure / "rsvps.json" <<? api_props
   val attendees = for {
     js <- http(req ># ('results ? (Js.list ! obj)))
     if ('response ! str)(js) == "yes"
