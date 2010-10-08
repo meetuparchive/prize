@@ -19,3 +19,4 @@ your path. Then,
 
 [1]:http://technically.us/spde/
 [2]:http://www.meetup.com/meetup_api/key/
+[sbt]:http://code.google.com/p/simple-build-tool/
